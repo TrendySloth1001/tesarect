@@ -67,6 +67,7 @@ export default function ActivityPage() {
   const [loading, setLoading] = useState(true);
   const [expandedCommits, setExpandedCommits] = useState<Set<string>>(new Set());
   const [selectedDay, setSelectedDay] = useState<string | null>(null);
+  const [lastUpdated, setLastUpdated] = useState<string>('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -81,6 +82,7 @@ export default function ActivityPage() {
         
         setData(repoData);
         setHeatmapData(heatmap);
+        setLastUpdated(new Date().toLocaleString());
       } catch (err) {
         console.error('Error fetching data:', err);
         setData({ commits: [], files: [], totalCommits: 0, error: 'Failed to fetch repository' });
@@ -272,7 +274,7 @@ export default function ActivityPage() {
             
             <div className="text-left lg:text-right text-xs md:text-sm text-gray-500 lg:flex-shrink-0">
               <div>Last updated</div>
-              <div className="text-gray-400 font-mono text-xs md:text-sm">{new Date().toLocaleString()}</div>
+              <div className="text-gray-400 font-mono text-xs md:text-sm">{lastUpdated || 'Loading...'}</div>
             </div>
           </div>
         </div>
@@ -411,7 +413,7 @@ export default function ActivityPage() {
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
                           </svg>
                         )}
-                        <div className="text-white mb-1 flex-1 prose prose-invert prose-sm max-w-none">
+                        <div className="text-white mb-1 flex-1 prose prose-invert prose-sm max-w-none" suppressHydrationWarning>
                           <ReactMarkdown remarkPlugins={[remarkGfm]}>{commit.message}</ReactMarkdown>
                         </div>
                       </div>
