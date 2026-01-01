@@ -15,12 +15,18 @@ interface DayData {
 
 interface HeatmapProps {
   days: DayData[];
+  onDayClick?: (date: string) => void;
+  selectedDay?: string | null;
 }
 
-export default function GitHeatmap({ days }: HeatmapProps) {
+export default function GitHeatmap({ days, onDayClick, selectedDay }: HeatmapProps) {
   const [hoveredDay, setHoveredDay] = useState<DayData | null>(null);
   const [currentDate, setCurrentDate] = useState(new Date());
   const [monthsToShow, setMonthsToShow] = useState(2);
+  
+  // Get today's data
+  const todayStr = new Date().toISOString().split('T')[0];
+  const todayData = days.find(day => day.date === todayStr);
 
   useEffect(() => {
     const handleResize = () => {
@@ -161,9 +167,12 @@ export default function GitHeatmap({ days }: HeatmapProps) {
                     key={`${weekIdx}-${dayIdx}`}
                     className={`w-7 h-7 rounded-sm flex items-center justify-center text-[10px] font-medium ${
                       day.date ? getLevelColor(day.level) : 'bg-transparent'
-                    } ${day.date ? 'cursor-pointer hover:ring-2 hover:ring-white' : ''}`}
+                    } ${day.date ? 'cursor-pointer hover:ring-2 hover:ring-white' : ''} ${
+                      selectedDay === day.date ? 'ring-2 ring-blue-400' : ''
+                    }`}
                     onMouseEnter={() => handleMouseEnter(day)}
                     onMouseLeave={handleMouseLeave}
+                    onClick={() => day.date && onDayClick?.(day.date)}
                   >
                     {day.date && new Date(day.date).getDate()}
                   </div>
@@ -218,6 +227,30 @@ export default function GitHeatmap({ days }: HeatmapProps) {
                 {hoveredDay.commits.length > 10 && (
                   <div className="text-xs text-gray-500">
                     +{hoveredDay.commits.length - 10} more
+                  </div>
+                )}
+              </div>
+            )}
+          </>
+        ) : todayData && todayData.count > 0 ? (
+          <>
+            <div className="text-white font-semibold mb-1">
+              Today
+            </div>
+            <div className="text-gray-300 text-sm mb-3">
+              {todayData.count} {todayData.count === 1 ? 'commit' : 'commits'}
+            </div>
+            {todayData.commits.length > 0 && (
+              <div className="space-y-2 max-h-60 overflow-y-auto">
+                {todayData.commits.slice(0, 10).map((commit) => (
+                  <div key={commit.sha} className="text-xs text-gray-400 border-l-2 border-gray-700 pl-2">
+                    <span className="text-gray-500 font-mono block">{commit.sha}</span>
+                    <span className="text-gray-300">{commit.message.split('\n')[0]}</span>
+                  </div>
+                ))}
+                {todayData.commits.length > 10 && (
+                  <div className="text-xs text-gray-500">
+                    +{todayData.commits.length - 10} more
                   </div>
                 )}
               </div>

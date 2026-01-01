@@ -75,7 +75,13 @@ export async function GET() {
             message: commit.commit.message,
             author: commit.commit.author.name,
             date: new Date(commit.commit.author.date).toLocaleString(),
-            files: detail.files || [],
+            files: (detail.files || []).map((file: any) => ({
+              path: file.filename,
+              status: file.status,
+              additions: file.additions,
+              deletions: file.deletions,
+              patch: file.patch || null
+            })),
             stats: detail.stats || { additions: 0, deletions: 0, total: 0 }
           };
         }
