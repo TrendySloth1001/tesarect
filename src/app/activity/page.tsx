@@ -1,10 +1,13 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import GitHeatmap from '@/components/GitHeatmap';
 import Waves from '@/components/Waves';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 interface FileChange {
   path: string;
@@ -19,6 +22,7 @@ interface Commit {
   message: string;
   author: string;
   date: string;
+  isoDate?: string;
   files: FileChange[];
   stats: {
     additions: number;
@@ -198,6 +202,17 @@ export default function ActivityPage() {
       </div>
 
       <div className="max-w-6xl mx-auto relative" style={{ zIndex: 10 }}>
+        {/* Back Button */}
+        <Link 
+          href="/" 
+          className="inline-flex items-center gap-2 text-gray-400 hover:text-white mb-6 transition group"
+        >
+          <svg className="w-4 h-4 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          </svg>
+          <span className="font-mono text-sm">cd ..</span>
+        </Link>
+
         {/* Header */}
         <div 
           className="mb-8 rounded-lg p-4 md:p-6 border border-white/10"
@@ -279,40 +294,42 @@ export default function ActivityPage() {
             <h2 className="text-xl mb-6">Contribution Activity</h2>
             
             {/* Stats Grid */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-              <div className="rounded-lg p-4" style={{ 
-                backgroundColor: 'rgba(0, 0, 0, 0.3)',
-                backdropFilter: 'blur(10px)',
-                WebkitBackdropFilter: 'blur(10px)'
-              }}>
-                <div className="text-gray-400 text-xs mb-1">Total Commits</div>
-                <div className="text-2xl font-bold">{heatmapData.stats.totalCommits}</div>
-              </div>
-              <div className="rounded-lg p-4" style={{ 
-                backgroundColor: 'rgba(0, 0, 0, 0.3)',
-                backdropFilter: 'blur(10px)',
-                WebkitBackdropFilter: 'blur(10px)'
-              }}>
-                <div className="text-gray-400 text-xs mb-1">Active Days</div>
-                <div className="text-2xl font-bold">{heatmapData.stats.daysWithCommits}</div>
-              </div>
-              <div className="rounded-lg p-4" style={{ 
-                backgroundColor: 'rgba(0, 0, 0, 0.3)',
-                backdropFilter: 'blur(10px)',
-                WebkitBackdropFilter: 'blur(10px)'
-              }}>
-                <div className="text-gray-400 text-xs mb-1">Current Streak</div>
-                <div className="text-2xl font-bold text-green-400">
-                  {heatmapData.stats.currentStreak} days
+            <div className="flex flex-wrap gap-3">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-500/20 border border-purple-500/30">
+                <svg className="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14" />
+                </svg>
+                <div>
+                  <div className="text-purple-200 text-xs">Total Commits</div>
+                  <div className="text-xl font-bold text-purple-100">{heatmapData.stats.totalCommits}</div>
                 </div>
               </div>
-              <div className="rounded-lg p-4" style={{ 
-                backgroundColor: 'rgba(0, 0, 0, 0.3)',
-                backdropFilter: 'blur(10px)',
-                WebkitBackdropFilter: 'blur(10px)'
-              }}>
-                <div className="text-gray-400 text-xs mb-1">Avg/Day</div>
-                <div className="text-2xl font-bold">{heatmapData.stats.averageCommitsPerDay}</div>
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/20 border border-blue-500/30">
+                <svg className="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                <div>
+                  <div className="text-blue-200 text-xs">Active Days</div>
+                  <div className="text-xl font-bold text-blue-100">{heatmapData.stats.daysWithCommits}</div>
+                </div>
+              </div>
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-500/20 border border-green-500/30">
+                <svg className="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+                <div>
+                  <div className="text-green-200 text-xs">Current Streak</div>
+                  <div className="text-xl font-bold text-green-100">{heatmapData.stats.currentStreak} days</div>
+                </div>
+              </div>
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-orange-500/20 border border-orange-500/30">
+                <svg className="w-5 h-5 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
+                <div>
+                  <div className="text-orange-200 text-xs">Avg/Day</div>
+                  <div className="text-xl font-bold text-orange-100">{heatmapData.stats.averageCommitsPerDay}</div>
+                </div>
               </div>
             </div>
 
@@ -328,7 +345,7 @@ export default function ActivityPage() {
         {/* Commits */}
         {(() => {
           const commitsToShow = selectedDay 
-            ? data.commits.filter(commit => commit.date.startsWith(selectedDay))
+            ? data.commits.filter(commit => commit.isoDate === selectedDay)
             : data.commits;
           
           return commitsToShow.length === 0 ? (
@@ -394,7 +411,9 @@ export default function ActivityPage() {
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
                           </svg>
                         )}
-                        <div className="text-white mb-1 flex-1">{commit.message}</div>
+                        <div className="text-white mb-1 flex-1 prose prose-invert prose-sm max-w-none">
+                          <ReactMarkdown remarkPlugins={[remarkGfm]}>{commit.message}</ReactMarkdown>
+                        </div>
                       </div>
                       <div className="text-gray-500 text-sm ml-6">
                         {commit.author} • {commit.date}
@@ -468,7 +487,7 @@ export default function ActivityPage() {
 
                   {/* View Full Diff Button */}
                   <div className="mt-3 pt-3 border-t border-white/10">
-                    <a
+                    <Link
                       href={`/activity/commit/${commit.sha}`}
                       className="text-sm text-gray-400 hover:text-white transition inline-flex items-center gap-2"
                     >
@@ -476,7 +495,7 @@ export default function ActivityPage() {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                       </svg>
                       View full diff
-                    </a>
+                    </Link>
                   </div>
                 </div>
               );

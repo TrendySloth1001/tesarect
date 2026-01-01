@@ -1,6 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 interface DayData {
   date: string;
@@ -221,7 +223,11 @@ export default function GitHeatmap({ days, onDayClick, selectedDay }: HeatmapPro
                 {hoveredDay.commits.slice(0, 10).map((commit) => (
                   <div key={commit.sha} className="text-xs text-gray-400 border-l-2 border-gray-700 pl-2">
                     <span className="text-gray-500 font-mono block">{commit.sha}</span>
-                    <span className="text-gray-300">{commit.message.split('\n')[0]}</span>
+                    <div className="text-gray-300 prose prose-invert prose-xs max-w-none">
+                      <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                        {commit.message.split('\n')[0]}
+                      </ReactMarkdown>
+                    </div>
                   </div>
                 ))}
                 {hoveredDay.commits.length > 10 && (
@@ -245,7 +251,11 @@ export default function GitHeatmap({ days, onDayClick, selectedDay }: HeatmapPro
                 {todayData.commits.slice(0, 10).map((commit) => (
                   <div key={commit.sha} className="text-xs text-gray-400 border-l-2 border-gray-700 pl-2">
                     <span className="text-gray-500 font-mono block">{commit.sha}</span>
-                    <span className="text-gray-300">{commit.message.split('\n')[0]}</span>
+                    <div className="text-gray-300 prose prose-invert prose-xs max-w-none">
+                      <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                        {commit.message.split('\n')[0]}
+                      </ReactMarkdown>
+                    </div>
                   </div>
                 ))}
                 {todayData.commits.length > 10 && (

@@ -152,6 +152,65 @@ canvas {
   }
 }
 
+/* Markdown prose styles */
+.prose {
+  color: #fff;
+}
+
+.prose p {
+  margin: 0;
+  line-height: 1.5;
+}
+
+.prose strong {
+  color: #fff;
+  font-weight: 700;
+}
+
+.prose em {
+  font-style: italic;
+  color: #e5e5e5;
+}
+
+.prose code {
+  background: rgba(139, 92, 246, 0.2);
+  padding: 0.125rem 0.25rem;
+  border-radius: 0.25rem;
+  font-size: 0.875em;
+  color: #a78bfa;
+}
+
+.prose a {
+  color: #818cf8;
+  text-decoration: underline;
+}
+
+.prose a:hover {
+  color: #a5b4fc;
+}
+
+.prose ul, .prose ol {
+  margin: 0.5rem 0;
+  padding-left: 1.5rem;
+}
+
+.prose li {
+  margin: 0.25rem 0;
+}
+
+.prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
+  margin: 0;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.prose blockquote {
+  border-left: 3px solid #818cf8;
+  padding-left: 1rem;
+  margin: 0.5rem 0;
+  color: #9ca3af;
+}
+
 /* Custom animations */
 @keyframes fadeIn {
   from {

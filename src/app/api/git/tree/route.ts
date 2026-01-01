@@ -70,11 +70,13 @@ export async function GET() {
 
         if (detailResponse.ok) {
           const detail = await detailResponse.json();
+          const commitDate = new Date(commit.commit.author.date);
           return {
             sha: commit.sha.substring(0, 7),
             message: commit.commit.message,
             author: commit.commit.author.name,
-            date: new Date(commit.commit.author.date).toLocaleString(),
+            date: commitDate.toLocaleString(),
+            isoDate: commitDate.toISOString().split('T')[0],
             files: (detail.files || []).map((file: any) => ({
               path: file.filename,
               status: file.status,

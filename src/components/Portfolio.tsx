@@ -12,11 +12,15 @@ const techStack = [
   { name: "TypeScript", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" },
   { name: "Python", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" },
   { name: "Node.js", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" },
+  { name: "NestJS", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nestjs/nestjs-original.svg" },
+  { name: "React", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" },
   { name: "Express", icon: "https://www.svgrepo.com/show/330398/express.svg", className: "brightness-0 invert" },
+  { name: "MongoDB", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg" },
+  { name: "Redis", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/redis/redis-original.svg" },
   { name: "Flutter", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flutter/flutter-original.svg" },
   { name: "Dart", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/dart/dart-original.svg" },
   { name: "Prisma", icon: "https://www.svgrepo.com/show/374002/prisma.svg" },
-  { name: "React", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" },
+  { name: "Microservices", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kubernetes/kubernetes-plain.svg" },
   { name: "Git", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" },
   { name: "GitHub", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg", className: "brightness-0 invert" },
 ];
@@ -118,6 +122,30 @@ export default function Portfolio() {
             <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
           </span>
           <span>Available for opportunities</span>
+        </div>
+        
+        {/* Journey Button with roasting message */}
+        <div className="mt-8 animate-[fadeIn_3.2s_ease-in]">
+          <a
+            href="/activity"
+            className="group relative inline-block"
+          >
+            <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-600 to-cyan-600 rounded-lg blur opacity-30 group-hover:opacity-100 transition duration-300"></div>
+            <div className="relative px-8 py-4 bg-black rounded-lg leading-none flex items-center gap-3 border border-purple-500/50 group-hover:border-purple-500 transition-all duration-300">
+              <span className="text-purple-400 group-hover:text-purple-300 transition-colors font-mono text-sm">
+                <span className="text-gray-500">&gt;</span> git log --graph --all
+              </span>
+              <span className="text-gray-400 group-hover:text-white transition-colors font-mono text-sm">
+                View My Journey
+              </span>
+              <svg className="w-4 h-4 text-purple-400 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              </svg>
+            </div>
+          </a>
+          <div className="mt-3 font-mono text-xs text-gray-500 italic">
+            <span className="text-gray-600">//</span> Warning: May contain bugs, caffeine-induced commits, and 3 AM "fixes"
+          </div>
         </div>
         
         {/* Cursor blink effect */}
